@@ -1,4 +1,4 @@
-import { isEqual, isFunction, isPresent, throwIfMissing, throwIfFalse } from "@openmaths/utils"
+import { isEqual, isFunction, isPresent, throwIfMissing, throwIfFalse } from "@usefultools/utils"
 
 export const OptionType = {
   Some: Symbol(":some"),

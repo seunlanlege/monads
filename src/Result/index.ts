@@ -1,4 +1,4 @@
-import { isEqual, throwIfFalse } from "@openmaths/utils"
+import { isEqual, throwIfFalse } from "@usefultools/utils"
 
 export const ResultType = {
   Ok: Symbol(":ok"),

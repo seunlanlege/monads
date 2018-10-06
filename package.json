@@ -11,7 +11,7 @@
     "test": "make test"
   },
   "dependencies": {
-    "@usefultools/utils": "^4.0.2"
+    "@usefultools/utils": "^6.0.3"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
