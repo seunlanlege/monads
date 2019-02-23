@@ -1,13 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("@openmaths/utils");
+function isFunction(val) {
+    return typeof val === "function";
+}
+function isPresent(val) {
+    return !!val;
+}
+function throwIfMissing(val, string) {
+    if (!isPresent(val)) {
+        throw string;
+    }
+}
 function Some(val) {
-    return utils_1.isPresent(val) ? some_constructor(val) : none_constructor();
+    return isPresent(val) ? some_constructor(val) : none_constructor();
 }
 exports.Some = Some;
 exports.None = none_constructor();
 function some_constructor(val) {
-    utils_1.throwIfMissing(val, `Some has to contain a value. Received ${typeof val}.`);
+    throwIfMissing(val, `Some has to contain a value. Received ${typeof val}.`);
     return {
         is_some() {
             return true;
@@ -31,7 +41,7 @@ function some_constructor(val) {
             return optb;
         },
         unwrap_or(def) {
-            utils_1.throwIfMissing(def, "Cannot call unwrap_or with a missing value.");
+            throwIfMissing(def, "Cannot call unwrap_or with a missing value.");
             return val;
         },
         unwrap() {
@@ -49,7 +59,7 @@ function none_constructor() {
             return true;
         },
         match(fn) {
-            return utils_1.isFunction(fn.none) ? fn.none() : fn.none;
+            return isFunction(fn.none) ? fn.none() : fn.none;
         },
         map(fn) {
             return none_constructor();
@@ -64,7 +74,7 @@ function none_constructor() {
             return none_constructor();
         },
         unwrap_or(def) {
-            utils_1.throwIfMissing(def, "Cannot call unwrap_or with a missing value.");
+            throwIfMissing(def, "Cannot call unwrap_or with a missing value.");
             return def;
         },
         unwrap() {

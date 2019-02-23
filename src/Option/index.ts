@@ -1,8 +1,20 @@
-import { isFunction, isPresent, throwIfMissing } from "@openmaths/utils"
-
 export interface Match<T, U> {
   some: (val: T) => U
   none: (() => U) | U
+}
+
+function isFunction(val: any): val is Function {
+  return typeof val === "function"
+}
+
+function isPresent(val: any): boolean {
+  return !!val
+}
+
+function throwIfMissing(val: any, string: string) {
+  if (!isPresent(val)) {
+    throw string
+  }
 }
 
 export interface Option<T> {
