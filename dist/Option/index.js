@@ -1,10 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("@openmaths/utils");
-exports.OptionType = {
-    Some: Symbol(":some"),
-    None: Symbol(":none"),
-};
 function Some(val) {
     return utils_1.isPresent(val) ? some_constructor(val) : none_constructor();
 }
@@ -13,7 +9,6 @@ exports.None = none_constructor();
 function some_constructor(val) {
     utils_1.throwIfMissing(val, `Some has to contain a value. Received ${typeof val}.`);
     return {
-        type: exports.OptionType.Some,
         is_some() {
             return true;
         },
@@ -47,7 +42,6 @@ function some_constructor(val) {
 exports.some_constructor = some_constructor;
 function none_constructor() {
     return {
-        type: exports.OptionType.None,
         is_some() {
             return false;
         },
@@ -79,20 +73,6 @@ function none_constructor() {
     };
 }
 exports.none_constructor = none_constructor;
-function is_option(val) {
-    return utils_1.isEqual(val.type, exports.OptionType.Some) || utils_1.isEqual(val.type, exports.OptionType.None);
-}
-exports.is_option = is_option;
-function is_some(val) {
-    utils_1.throwIfFalse(is_option(val), "val is not an Option");
-    return val.is_some();
-}
-exports.is_some = is_some;
-function is_none(val) {
-    utils_1.throwIfFalse(is_option(val), "val is not an Option");
-    return val.is_none();
-}
-exports.is_none = is_none;
 function get_in(obj, key) {
     const val = key.split(".").reduce((o, x) => (o == null ? o : o[x]), obj);
     return Some(val);

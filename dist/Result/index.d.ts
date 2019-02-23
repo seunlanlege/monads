@@ -1,13 +1,8 @@
-export declare const ResultType: {
-    Ok: symbol;
-    Err: symbol;
-};
 export interface Match<T, E, U> {
     ok: (val: T) => U;
     err: (val: E) => U;
 }
 export interface Result<T, E> {
-    type: symbol;
     is_ok(): boolean;
     is_err(): boolean;
     unwrap(): T | never;
@@ -33,6 +28,3 @@ export interface _Err<E, T = never> extends Result<T, E> {
 }
 export declare function Ok<T, E = never>(val: T): _Ok<T, E>;
 export declare function Err<T, E>(val: E): _Err<E, T>;
-export declare function is_result<T, E>(val: Result<T, E> | any): val is Result<T, E>;
-export declare function is_ok<T, E>(val: Result<T, E>): val is _Ok<T>;
-export declare function is_err<T, E>(val: Result<T, E>): val is _Err<E, T>;

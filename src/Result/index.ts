@@ -1,17 +1,9 @@
-import { isEqual, throwIfFalse } from "@openmaths/utils"
-
-export const ResultType = {
-  Ok: Symbol(":ok"),
-  Err: Symbol(":err"),
-}
-
 export interface Match<T, E, U> {
   ok: (val: T) => U
   err: (val: E) => U
 }
 
 export interface Result<T, E> {
-  type: symbol
   is_ok(): boolean
   is_err(): boolean
   unwrap(): T | never
@@ -40,7 +32,6 @@ export interface _Err<E, T = never> extends Result<T, E> {
 
 export function Ok<T, E = never>(val: T): _Ok<T, E> {
   return {
-    type: ResultType.Ok,
     is_ok(): boolean {
       return true
     },
@@ -73,7 +64,6 @@ export function Ok<T, E = never>(val: T): _Ok<T, E> {
 
 export function Err<T, E>(val: E): _Err<E, T> {
   return {
-    type: ResultType.Err,
     is_ok(): boolean {
       return false
     },
@@ -102,18 +92,4 @@ export function Err<T, E>(val: E): _Err<E, T> {
       return Err<U, E>(val)
     },
   }
-}
-
-export function is_result<T, E>(val: Result<T, E> | any): val is Result<T, E> {
-  return isEqual(val.type, ResultType.Ok) || isEqual(val.type, ResultType.Err)
-}
-
-export function is_ok<T, E>(val: Result<T, E>): val is _Ok<T> {
-  throwIfFalse(is_result(val), "val is not a Result")
-  return val.is_ok()
-}
-
-export function is_err<T, E>(val: Result<T, E>): val is _Err<E, T> {
-  throwIfFalse(is_result(val), "val is not a Result")
-  return val.is_err()
 }

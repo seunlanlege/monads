@@ -1,9 +1,4 @@
-import { isEqual, isFunction, isPresent, throwIfMissing, throwIfFalse } from "@openmaths/utils"
-
-export const OptionType = {
-  Some: Symbol(":some"),
-  None: Symbol(":none"),
-}
+import { isFunction, isPresent, throwIfMissing } from "@openmaths/utils"
 
 export interface Match<T, U> {
   some: (val: T) => U
@@ -11,7 +6,6 @@ export interface Match<T, U> {
 }
 
 export interface Option<T> {
-  type: symbol
   is_some(): boolean
   is_none(): boolean
   match<U>(fn: Match<T, U>): U
@@ -47,7 +41,6 @@ export function some_constructor<T>(val: T): _Some<T> {
   throwIfMissing(val, `Some has to contain a value. Received ${typeof val}.`)
 
   return {
-    type: OptionType.Some,
     is_some(): boolean {
       return true
     },
@@ -81,7 +74,6 @@ export function some_constructor<T>(val: T): _Some<T> {
 
 export function none_constructor<T>(): _None<T> {
   return {
-    type: OptionType.None,
     is_some(): boolean {
       return false
     },
@@ -111,20 +103,6 @@ export function none_constructor<T>(): _None<T> {
       throw new ReferenceError("Trying to unwrap None.")
     },
   }
-}
-
-export function is_option<T>(val: Option<T> | any): val is Option<T> {
-  return isEqual(val.type, OptionType.Some) || isEqual(val.type, OptionType.None)
-}
-
-export function is_some<T>(val: Option<T>): val is _Some<T> {
-  throwIfFalse(is_option(val), "val is not an Option")
-  return val.is_some()
-}
-
-export function is_none<T>(val: Option<T>): val is _None<T> {
-  throwIfFalse(is_option(val), "val is not an Option")
-  return val.is_none()
 }
 
 export function get_in(obj: Object | undefined | null, key: string): Option<any> {
